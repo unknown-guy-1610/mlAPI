@@ -1,19 +1,18 @@
 <p align="center">
 	<img src="https://user-images.githubusercontent.com/30529572/72455010-fb38d400-37e7-11ea-9c1e-8cdeb5f5906e.png" />
-	<h2 align="center"> < Insert Project Title Here > </h2>
-	<h4 align="center"> < Insert Project Description Here > <h4>
+	<h2 align="center"> Automating ML Tasks </h2>
+	<h4 align="center"> A platform which creates an API for an ML guy based on the model and YAML file.  <h4>
 </p>
 
 ---
-[![DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](INSERT_LINK_FOR_DOCS_HERE) 
+[![DOCS](https://img.shields.io/badge/Documentation-see%20docs-green?style=flat-square&logo=appveyor)](https://documenter.getpostman.com/view/8653133/SWTEbvag?version=latest) 
   [![UI ](https://img.shields.io/badge/User%20Interface-Link%20to%20UI-orange?style=flat-square&logo=appveyor)](INSERT_UI_LINK_HERE)
 
 
 ## Functionalities
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
-- [ ]  < insert functionality >
+- [ ]  Authentication.
+- [ ]  CLI Client for uploading model, processing and TOML file.
+- [ ]  API for end user.
 
 <br>
 
@@ -21,26 +20,34 @@
 ## Instructions to run
 
 * Pre-requisites:
-	-  < insert pre-requisite >
-	-  < insert pre-requisite >
+	-  Python
+	-  PIP
 
-* < directions to install > 
+* First clone the project
 ```bash
-< insert code >
+git clone https://github.com/GDGVIT/mlAPI
 ```
 
-* < directions to execute >
+* Downloading all requirements
 
 ```bash
-< insert code >
+pip3 install -r requirements.txt
 ```
+* Creating a DB and Migrating all tables
 
+```bash
+python manage.py migrate
+```
+* Running Server
+
+```bash
+python manage.py runserver
+```
 <br>
 
 ## Contributors
 
-* [ < INSERT NAME HERE > ](INSERT_PROFILE_URL_HERE)
-* [ < INSERT NAME HERE > ](INSERT_PROFILE_URL_HERE)
+* [ Sai Sandeep ](https://github.com/unknown-guy-1610)
 
 
 
