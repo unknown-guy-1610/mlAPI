@@ -28,6 +28,7 @@ def init(current_dir):
 
 
 def main(current_dir):
+    
     print("Welcome to AutoML\n")
     current_dir+='.dsc.toml'
     toml_list = toml.load(current_dir)
@@ -121,13 +122,13 @@ def main(current_dir):
     return True
 
 
-
-option=input("Choose a option :\n 1) Create a init file\n 2)Create a project")
-if option==1:
-    loc = input("Please paste the directory to generate init file :")
-    init(loc)
-elif option==2:
-    loc = input("Please paste the directory of .dsc.toml file :")
-    main(loc)
-else:
-    print("wrong option")
+def cli():
+    option=input("Choose a option :\n 1) Create a init file\n 2)Create a project")
+    if option==1:
+        loc = input("Please paste the directory to generate init file :")
+        init(loc)
+    elif option==2:
+        loc = input("Please paste the directory of .dsc.toml file :")
+        main(loc)
+    else:
+        print("wrong option")
