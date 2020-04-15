@@ -21,6 +21,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    install_requires=['asgiref', 'astroid', 'dj-database-url', 'Django', 'django-heroku', 'djangorestframework', 'gunicorn', 'isort', 'lazy-object-proxy', 'mccabe', 'psycopg2', 'pylint', 'pytz', 'six', 'sqlparse', 'toml', 'typed-ast', 'whitenoise', 'wrapt'],
     python_requires = '>=3.6',
     
 )
