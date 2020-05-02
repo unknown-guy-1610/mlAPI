@@ -3,7 +3,12 @@ import subprocess
 from shutil import copyfile
 import shutil
 import toml
+
+import click
+import platform
+
 import mlup
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def excute(cmd):
@@ -23,26 +28,37 @@ def copytree(src, dst, symlinks=False, ignore=None):
         else:
             shutil.copy2(s, d)
 
-def init(current_dir):
+def init_config(current_dir):
+    
+    """ For Generating the init configuration file """
+    
     print("Genrating a INIT File in",current_dir)
-    shutil.copyfile(mlup.__file__.split('/__init__.py')[0]+'/.dsc.toml',os.path.join(current_dir+'/.dsc.toml'))
+    print(os.path.join(mlup.__file__.split('__init__.py')[0],'dsc.toml'))
+    print(os.path.join(current_dir,'dsc.toml'))
+    shutil.copyfile(os.path.join(mlup.__file__.split('__init__.py')[0],'dsc.toml')\
+        , os.path.join(current_dir,'dsc.toml'))
 
 
 def main(current_dir):
-    print("Welcome to AutoML by MLUP\n")
+    
     project_loc = mlup.__file__.split('/__init__.py')[0]+ '/automl'
     toml_loc = current_dir+'/.dsc.toml'
     toml_list = toml.load(toml_loc)
     project_name = toml_list['project_name']
+    
     print("Making project : ",project_name)
+    
     input_dict = []
+    
     if os.path.exists(project_name):
         print("File exists")
         exit(0)
+    
     excute('mkdir '+project_name)
     copytree(project_loc,project_name+'/')
-    print("\n")
+    
     input_text=''
+    
     for i in toml_list['inputs']:
         feild_name = i['input_name']
         feild_type = i['input_type']
@@ -51,12 +67,15 @@ def main(current_dir):
             input_text = feild_name+','
             max_length = i['max_length']
             input_dict.append('    '+ feild_name+' = models.CharField(max_length='+str(max_length)+')\n')
+        
         elif feild_type==2:
             input_text = feild_name+','
             input_dict.append('    '+ feild_name +' = models.IntegerField()\n')
+        
         elif feild_type==3:
             input_text = feild_name+','
             input_dict.append('    '+ feild_name +' = models.ImageField()\n')
+        
         elif feild_type == 4:
             input_text = feild_name+','
             input_dict.append('    '+ feild_name +' = models.TextField()\n')
@@ -64,7 +83,9 @@ def main(current_dir):
         else:
             print('Not a valid option exiting!')
             exit(0)
+    
     output_list = toml_list['outputs']
+    
     model_text = '''
 from django.db import models
 
@@ -124,13 +145,34 @@ class User_Add(APIView):
     print('Done -- Made with Love by DSCVIT')
     return True
 
+   
+@click.group(help='A CLI to automatically deploy your ML models')
+def cli():
+    pass
 
-def cli(option):
-    if option==1:
-        init(os.getcwd())
-    elif option==2:
-        main(os.getcwd())
+@cli.command(help='Initialize the configuration file')
+def init():
+    init_config(os.getcwd())
+    click.echo('Configuration Generated')
+    # except:
+    #     click.echo('Some error occured')
+    
+
+@cli.command(help='Helps you setup your project')
+def generate(parse,address):
+    click.echo('Set up Your project')
+    main(os.getcwd())
+
+@cli.command(help='Deploy model to heroku')
+def deploy():
+    if platform.system() == 'Windows':
+        excute('heroku.batch')
     else:
         excute('./heroku.sh')
+
+
+if __name__ == "__main__":
+    cli()
+    
 
 
