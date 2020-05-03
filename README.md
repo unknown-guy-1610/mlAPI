@@ -3,7 +3,7 @@
 	<h2 align="center"> mlUp - A CLI based tool to deploy ML models </h2>
 	<h4 align="center"> This is a cli based tool for quickly deploying model without writing a single line of code<h4>
     <br>
-    <img src="Screenhots/ci_ss1.PNG"/>
+    <img src="./Screenhots/cli_ss1.PNG"/>
 </p>
 
 ---
