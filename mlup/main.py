@@ -7,17 +7,13 @@ import toml
 import click
 import platform
 
-import mlup
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def excute(cmd):
-    process = subprocess.Popen(cmd, shell=True,
-                           stdout=subprocess.PIPE, 
-                           stderr=subprocess.PIPE)
-    out, err = process.communicate()
-    errcode = process.returncode
-    return out,errcode
+
+def execute(cmd):
+    process = subprocess.call(cmd)
+    print(process)    
 
 def copytree(src, dst, symlinks=False, ignore=None):
     for item in os.listdir(src):
@@ -33,16 +29,14 @@ def init_config(current_dir):
     """ For Generating the init configuration file """
     
     print("Genrating a INIT File in",current_dir)
-    print(os.path.join(mlup.__file__.split('__init__.py')[0],'dsc.toml'))
-    print(os.path.join(current_dir,'dsc.toml'))
-    shutil.copyfile(os.path.join(mlup.__file__.split('__init__.py')[0],'dsc.toml')\
+    shutil.copyfile(os.path.join(*[BASE_DIR, 'mlup', 'dsc.toml'])\
         , os.path.join(current_dir,'dsc.toml'))
 
 
 def main(current_dir):
     
-    project_loc = mlup.__file__.split('/__init__.py')[0]+ '/automl'
-    toml_loc = current_dir+'/.dsc.toml'
+    project_loc = os.path.join(*[BASE_DIR, 'mlup', 'automl'])
+    toml_loc = os.path.join(current_dir,'dsc.toml')
     toml_list = toml.load(toml_loc)
     project_name = toml_list['project_name']
     
@@ -54,8 +48,8 @@ def main(current_dir):
         print("File exists")
         exit(0)
     
-    excute('mkdir '+project_name)
-    copytree(project_loc,project_name+'/')
+    os.mkdir(os.path.join(project_loc,project_name))
+    copytree(project_loc, project_name+'/')
     
     input_text=''
     
@@ -152,23 +146,25 @@ def cli():
 
 @cli.command(help='Initialize the configuration file')
 def init():
-    init_config(os.getcwd())
-    click.echo('Configuration Generated')
-    # except:
-    #     click.echo('Some error occured')
+    try:
+        init_config(os.getcwd())
+        click.echo('Configuration Generated')
+    except:
+        click.echo('Some error occured')
     
 
 @cli.command(help='Helps you setup your project')
-def generate(parse,address):
+def generate():
     click.echo('Set up Your project')
     main(os.getcwd())
 
 @cli.command(help='Deploy model to heroku')
-def deploy():
+@click.option('--filename', '-f', required=True, type=str, help='Give the filename of the dir')
+def deploy(filename):
     if platform.system() == 'Windows':
-        excute('heroku.batch')
+        execute(['deploy_heroku.bat', os.path.join(os.getcwd(),filename)])
     else:
-        excute('./heroku.sh')
+        execute(['./deploy_heroku.sh', os.path.join(os.getcwd(),filename)])
 
 
 if __name__ == "__main__":

@@ -1,9 +1,10 @@
 @echo off
 
-ECHO Changing to AutoML Dir
-PUSHD automl
+ECHO Changing to Working Dir
+ECHO %1
+PUSHD %1
 
-CALL heroku
+CALL where heroku
 IF ERRORLEVEL 1 GOTO NOTFOUND
 
 git remote show heroku | find "heroku" > NUL & IF ERRORLEVEL 1 (
@@ -17,7 +18,7 @@ git remote show heroku | find "heroku" > NUL & IF ERRORLEVEL 1 (
 ECHO Adding all files to heroku!!
 git init
 git add . && git commit  
-git push heroku master -f
+git push heroku master
 IF ERRORLEVEL 1 (
     ECHO Some Error Occured!!
     EXIT /B

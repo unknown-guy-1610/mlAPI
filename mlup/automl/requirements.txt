@@ -1,0 +1,4 @@
+Django==3.0.5
+asposestorage==1.0.2
+django_heroku==0.3.1
+djangorestframework==3.11.0
