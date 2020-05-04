@@ -1,7 +1,5 @@
 project_name = "Test1"
 
-
-
 [[inputs]] 
 input_name = "Test"
 input_type = 1

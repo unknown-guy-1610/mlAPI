@@ -1,0 +1,5 @@
+include mlup/automl/Procfile
+include mlup/automl/requirements.txt
+include mlup/deploy_heroku.bat
+include mlup/deploy_heroku.sh
+include mlup/dsc.toml
